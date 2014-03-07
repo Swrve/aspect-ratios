@@ -29,12 +29,17 @@
     };
 
     var draw = function(devices) {
+
+
       var max = 0;
       _.each(devices, function(aspect){
         max = Math.max(max, aspect[1]);
       });
       console.log('Max devices: ' + max);
+
       var canvas = $('#canvas')[0];
+      // Clear
+      canvas.width = canvas.width;
       var c      = canvas.getContext('2d');
       var width = 500;
       var middle = canvas.height / 2.0;
