@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head></head>
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+  <script type="text/javascript" src="http:////cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+  <script type="text/javascript">
+  $(function(){
+    var aspects = {
+      iOS: [
+        [ 3/2,  1], // iPhone 4 and lower
+        [71/40, 1], // iPhone 5 and newer
+        [ 4/3,  1]  // iPad
+      ],
+
+      android: [
+        [1.78, 2843],
+        [1.67, 1701],
+        [1.86, 990],
+        [1.7, 797],
+        [1.5, 580],
+        [1.8, 532],
+        [1.85, 450],
+        [1.66, 446],
+        [1.6, 334],
+        [1.42, 286],
+        [1.71, 285],
+        [1.74, 281]
+      ],
+    };
+
+    var draw = function(devices) {
+      var max = 0;
+      _.each(devices, function(aspect){
+        max = Math.max(max, aspect[1]);
+      });
+      console.log('Max devices: ' + max);
+      var canvas = $('#canvas')[0];
+      var c      = canvas.getContext('2d');
+      var width = 500;
+      var middle = canvas.height / 2.0;
+      _.each(devices, function(aspect) {
+        var device_height = width/aspect[0];
+        var frequency     = aspect[1] / max;
+        c.globalAlpha = frequency;
+        c.strokeRect(20, middle - (device_height/2.0), width, width/aspect[0]);
+      });
+    };
+
+    var select = $('select#os');
+    var update = function(){
+      var os = $(select).val();
+      console.log(os);
+      draw(aspects[os]);
+    };
+    $(select).change(update);
+    update();
+  });
+  </script>
+  <body>
+    <div>
+      <select id="os">
+        <option value="iOS">iOS</option>
+        <option value="android">Android</option>
+      </select>
+    </div>
+    <div>
+      <canvas id="canvas" width="600" height="500"></canvas>
+    </div>
+  </body>
+</html>
